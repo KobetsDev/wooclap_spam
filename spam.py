@@ -7,7 +7,6 @@ import sys
 import time
 import aiohttp
 
-import grequests
 import requests
 from fake_useragent import UserAgent
 from typing import List
@@ -24,22 +23,6 @@ class Wooclap:
 
     def exception_handler(request, exception):
         print("Request failed", request, exception)
-
-    def spam(self) -> None:
-        token: str = self.generate_token()
-        req = (grequests.post(link,
-                              headers={
-                                  'Content-Type': 'application/json',
-                                  'Accept': '*/*',
-                                  'Accept-Encoding': 'gzip, deflate, br',
-                                  'Connection': 'keep-alive',
-                                  'User-Agent': ua.random,
-                                  'authorization': f"bearer {token}"
-                              },
-                              json={"choices": [self.question_id],
-                                    "token": token}) for link in [self.spam_link+self.author_id+'/push_answer']*self.number_of_attacks)
-        resp: List[bool] = grequests.map(req, exception_handler=self.exception_handler)
-        print(all(resp))
 
     async def smoothly(self) -> None:
         async with aiohttp.ClientSession() as session:
@@ -90,11 +73,12 @@ class Wooclap:
         n_of_a = input('Введите кол-во голосов(50): ')
         if n_of_a != '':
             self.number_of_attacks: int = int(n_of_a)
-        type_attack: int = int(input('1) Плавно\n2) Спамом(Beta)\nВведите тип атаки: '))
+        # type_attack: int = int(input('1) Плавно\n2) Спамом(Beta)\nВведите тип атаки: '))
+        type_attack: int = 1
         if type_attack == 1:
             asyncio.get_event_loop().run_until_complete(self.smoothly())
-        elif type_attack == 2:
-            asyncio.get_event_loop().run_until_complete(self.spam())
+        # elif type_attack == 2:
+        #     asyncio.get_event_loop().run_until_complete(self.spam())
 
 
 W = Wooclap()
