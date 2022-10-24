@@ -1,0 +1,3 @@
+aiohttp
+grequests
+fake_useragent
