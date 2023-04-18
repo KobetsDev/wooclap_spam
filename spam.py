@@ -76,8 +76,8 @@ class Wooclap:
                         
 
     async def start(self):
-        # self.api_link = 'https://app.wooclap.com/api/events/' + input('Введите ссылку: ').split('/')[-1]  #
-        self.api_link = 'https://app.wooclap.com/api/events/BBGUOK'
+        self.api_link = 'https://app.wooclap.com/api/events/' + input('Введите ссылку: ').split('/')[-1]  #
+        # self.api_link = 'https://app.wooclap.com/api/events/BBGUOK'
         info = await self.get_info()
         answers = info.get('choices')
         for num, answer in enumerate(answers):
