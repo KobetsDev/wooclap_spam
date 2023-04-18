@@ -48,6 +48,15 @@ class Wooclap:
                 sys.exc_info('author_id = None')
             return data.get('questions')[-1]
 
+    async def print_info(self):
+        info = await self.get_info()
+        answers = info.get('choices')
+        result = info.get('nbAnswersByChoice')
+        self.cls()
+        print('_'*20)
+        for answer in answers:
+            print(answer.get('choice'), result.get(answer.get('_id')))
+
     async def smoothly(self) -> None:
         async with aiohttp.ClientSession() as session:
             for _ in range(self.number_of_attacks):
@@ -62,22 +71,20 @@ class Wooclap:
                         time.sleep(1)
                     data = await resp.json()
                     if data.get('error'):
+                        await self.print_info()
                         print(data.get('error').get('message'))
                         await asyncio.sleep(2)
                         continue
-                    info = await self.get_info()
-                    answers = info.get('choices')
-                    result = info.get('nbAnswersByChoice')
                     if _ % 3 == 0:
-                        self.cls()
-                        print('_'*20)
-                        for answer in answers:
-                            print(answer.get('choice'), result.get(answer.get('_id')))
+                        await self.print_info()
                     if _ % 21 == 0:
-                        cont = str(input('Хватит? '))
-                        if 'да' in cont.lower():
-                            sys.exit()
-                        
+                        inp = 'qwe'
+                        while not inp.strip() == "":
+                            inp = str(input('стоп/сколько '))
+                            if 'стоп' in inp.lower():
+                                sys.exit()
+                            elif 'сколько' in inp.lower():
+                                await self.print_info()
 
     async def start(self):
         self.api_link = 'https://app.wooclap.com/api/events/' + input('Введите ссылку: ').split('/')[-1]  #
