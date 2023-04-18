@@ -8,10 +8,9 @@ import sys
 import time
 import aiohttp
 
-import requests
 from fake_useragent import UserAgent
 from typing import List
-ua = UserAgent()
+ua = UserAgent(verify_ssl=False)
 
 
 @dataclass
