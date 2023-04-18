@@ -7,10 +7,8 @@ from dataclasses import dataclass
 import sys
 import time
 import aiohttp
-
-from fake_useragent import UserAgent
+from user_agent import generate_user_agent
 from typing import List
-ua = UserAgent(verify_ssl=False)
 
 
 @dataclass
@@ -37,7 +35,7 @@ class Wooclap:
                 'Accept': '*/*',
                 'Accept-Encoding': 'gzip, deflate, br',
                 'Connection': 'keep-alive',
-                'User-Agent': ua.random,
+                'User-Agent': generate_user_agent(),
                 'authorization': f"bearer {self.generate_token()}"
             }
             )
@@ -52,7 +50,7 @@ class Wooclap:
             for _ in range(self.number_of_attacks):
                 token: str = self.generate_token()
                 async with session.post(self.spam_link + self.author_id + '/push_answer', headers={
-                    'User-Agent': ua.random,
+                    'User-Agent': generate_user_agent(),
                     'authorization': f"bearer {token}"
                 },
                     json={"choices": [self.question_id], "token": token}
