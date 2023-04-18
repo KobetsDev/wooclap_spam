@@ -19,6 +19,9 @@ class Wooclap:
     author_id: str = ''
     number_of_attacks = 50
 
+    def cls(self):
+        os.system('cls' if os.name=='nt' else 'clear')
+
     def exception_handler(request, exception):
         print("Request failed", request, exception)
 
@@ -43,7 +46,7 @@ class Wooclap:
             self.author_id = data.get('selectedQuestion')
             if not self.author_id:
                 sys.exc_info('author_id = None')
-            return data.get('questions')[-1]#.get('choices')
+            return data.get('questions')[-1]
 
     async def smoothly(self) -> None:
         async with aiohttp.ClientSession() as session:
@@ -66,10 +69,14 @@ class Wooclap:
                     answers = info.get('choices')
                     result = info.get('nbAnswersByChoice')
                     if _ % 3 == 0:
-                        os.system('cls')
+                        self.cls()
                         print('_'*20)
                         for answer in answers:
                             print(answer.get('choice'), result.get(answer.get('_id')))
+                    if _ % 21 == 0:
+                        cont = str(input('Хватит? '))
+                        if 'да' in cont.lower():
+                            sys.exit()
                         
 
     async def start(self):
